@@ -1,0 +1,85 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-styles/default-theme.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="elements/timetable-list.html">
+
+<dom-module id="timetable-app">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+      paper-tabs {
+        --paper-tabs-selection-bar-color: var(--accent-color)
+      }
+    </style>
+
+    <!-- force-narrow prevents the drawer from ever being displayed
+        in persistent mode -->
+    <paper-drawer-panel force-narrow>
+
+     <paper-header-panel drawer>
+
+       <!-- an empty toolbar in the drawer looks like a
+            continuation of the main toolbar. It's optional. -->
+       <paper-toolbar class="tall"></paper-toolbar>
+
+       <!-- Nav on mobile: side nav menu -->
+       <paper-menu selected="{{selected}}" attr-for-selected="name">
+         <template is="dom-repeat" items="{{items}}">
+           <paper-item name="{{item}}">{{item}}</paper-item>
+         </template>
+       </paper-menu>
+
+     </paper-header-panel>
+
+     <paper-header-panel mode="waterfall" main>
+
+       <paper-toolbar hidden$="{{wideLayout}}">
+         <!-- drawer toggle button -->
+         <paper-icon-button class="menu-button" icon="menu" paper-drawer-toggle></paper-icon-button>
+       </paper-toolbar>
+
+       <paper-toolbar class="tabs-bar" hidden$="{{!wideLayout}}">
+         <!-- Nav on desktop: tabs -->
+         <paper-tabs selected="{{selected}}" attr-for-selected="name" bottom-item>
+           <template is="dom-repeat" items="{{items}}">
+             <paper-tab name="{{item}}">{{item}}</paper-tab>
+           </template>
+         </paper-tabs>
+       </paper-toolbar>
+
+       <timetable-list></timetable-list>
+
+     </paper-header-panel>
+
+   </paper-drawer-panel>
+
+    <iron-media-query query="min-width: 600px" query-matches="{{wideLayout}}"></iron-media-query>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'timetable-app',
+
+      properties: {
+        items: {
+          type: Array,
+          value: ['Расписание', 'Критерии', 'Дата']
+        }
+      },
+
+    });
+  </script>
+</dom-module>

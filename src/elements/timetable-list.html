@@ -1,0 +1,78 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower_components/paper-styles/default-theme.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-toolbar/paper-toolbar.html">
+
+<dom-module id="timetable-list">
+
+  <template>
+
+    <style>
+      .container {
+        width: 100%;
+        margin: auto;
+      }
+      @media screen and (min-width: 600px) {
+        .container {
+          width: 600px;
+        }
+      }
+      .card-wrapper + .card-wrapper{
+        padding-top: 16px;
+      }
+      iron-list {
+        padding: 16px;
+        flex-direction: column;
+        justify-content: center;
+      }
+      paper-card {
+        width: 100%;
+      }
+      paper-toolbar {
+        --paper-toolbar-title: {
+          margin-left: 0;
+        }
+      }
+      .day-of-week {
+        @apply(--paper-font-common-base);
+      }
+    </style>
+
+    <div class="container flex-vertical">
+
+      <iron-list items="[[items]]" scroll-target="document">
+        <template>
+          <div class="card-wrapper">
+            <paper-card>
+              <paper-toolbar>
+                <span class="title">Четверг</span>
+                <span class="day-of-week">21.10.2016</span>
+              </paper-toolbar>
+              <div class="card-content">Some content</div>
+            </paper-card>
+          </div>
+        </template>
+      </iron-list>
+
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'timetable-list',
+
+      properties: {
+        items: {
+          type: Array,
+          value: [1, 2, 3, 4, 5, 6, 7]
+        }
+      },
+
+    });
+  </script>
+
+</dom-module>
