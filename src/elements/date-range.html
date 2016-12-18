@@ -1,16 +1,98 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-styles/default-theme.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-date-picker/paper-date-picker.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/moment-element/moment-with-locales-import.html">
 
 <dom-module id="date-range">
 
   <template>
-    <paper-card>
-      <div class="card-content">
-        <paper-radio-button value="sevenDays">7 дней</paper-radio-button>
+
+    <style>
+      .container {
+        padding: 16px;
+        margin: auto;
+      }
+      @media screen and (min-width: 632px) {
+        .container {
+          width: 600px;
+        }
+      }
+      paper-card {
+        width: 100%;
+      }
+      paper-card + paper-card {
+        margin-top: 16px;
+      }
+      .column {
+        display: flex;
+        flex-direction: column;
+      }
+      paper-radio-button {
+        --paper-radio-button-checked-color: var(--accent-color);
+      }
+      span {
+        line-height: 1.5;
+      }
+      .primary {
+        @apply(--paper-font-common-base);
+        font-size: 16px;
+      }
+      .secondary {
+        @apply(--paper-font-common-base);
+        font-size: 14px;
+        color: var(--light-theme-secondary-color);
+      }
+      .date-range-item {
+        cursor: pointer;
+        position: relative;
+        padding: 8px 16px;
+        margin: 0 -16px;
+      }
+    </style>
+
+    <div class="container">
+      <paper-card heading="Диапазон">
+        <div class="card-content">
+          <paper-radio-group class="column" selected="{{dateRange}}">
+            <paper-radio-button name="sevenDays">7 дней</paper-radio-button>
+            <paper-radio-button name="currentWeek">Текущая неделя</paper-radio-button>
+            <paper-radio-button name="nextWeek">Следующая неделя</paper-radio-button>
+            <paper-radio-button name="currentMonth">Текущий месяц</paper-radio-button>
+            <paper-radio-button name="custom">Свой вариант</paper-radio-button>
+          </paper-radio-group>
+        </div>
+      </paper-card>
+      <paper-card heading="Выберите дату" hidden$="[[isPredefinedDateRangeSelected]]">
+        <div class="card-content">
+          <div class="column date-range-item" name="from" on-click="onCustomDateRangeItemTap">
+            <span class="primary">От</span>
+            <span class="secondary">01.01.2017</span>
+            <paper-ripple></paper-ripple>
+          </div>
+          <div class="column date-range-item" name="to" on-click="onCustomDateRangeItemTap">
+            <span class="primary">До</span>
+            <span class="secondary">01.01.2017</span>
+            <paper-ripple></paper-ripple>
+          </div>
+        </div>
+      </paper-card>
+    </div>
+
+    <paper-dialog id="dialog" class="paper-date-picker-dialog" modal
+      on-iron-overlay-closed="dismissDialog">
+      <paper-date-picker id="picker" date="[[date]]" locale="ru"></paper-date-picker>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Отмена</paper-button>
+        <paper-button dialog-confirm>ОК</paper-button>
       </div>
-    </paper-card>
+    </paper-dialog>
+
   </template>
 
   <script>
@@ -32,8 +114,22 @@
             from: '01.01.2017',
             to: '01.01.2017'
           }
+        },
+
+        isPredefinedDateRangeSelected: {
+          type: Boolean,
+          computed: 'calculateIsPredefinedDateRangeSelected(dateRange)'
         }
 
+      },
+
+      calculateIsPredefinedDateRangeSelected: function(dateRange) {
+        return dateRange != 'custom';
+      },
+
+      onCustomDateRangeItemTap: function(e) {
+        var name = e.currentTarget.getAttribute('name');
+        dialog.open();
       }
 
     });
