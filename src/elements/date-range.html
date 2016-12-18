@@ -1,0 +1,42 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/default-theme.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+
+<dom-module id="date-range">
+
+  <template>
+    <paper-card>
+      <div class="card-content">
+        <paper-radio-button value="sevenDays">7 дней</paper-radio-button>
+      </div>
+    </paper-card>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'date-range',
+
+      proprties: {
+
+        dateRange: {
+          type: String,
+          value: 'sevenDays',
+          notify: true
+        },
+
+        customDateRange: {
+          type: Object,
+          value: {
+            from: '01.01.2017',
+            to: '01.01.2017'
+          }
+        }
+
+      }
+
+    });
+  </script>
+
+</dom-module>
