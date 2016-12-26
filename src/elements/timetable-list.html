@@ -98,32 +98,43 @@
 </template>
 
 <script>
-    Polymer({
+  Polymer({
 
-        is: 'timetable-list',
+    is: 'timetable-list',
 
-        properties: {
-            items: {
-                type: Array,
-                value: []
-            }
-        },
+    properties: {
+      items: {
+          type: Array,
+          value: []
+      }
+    },
 
-        ready: function () {
-            var params = {
-                criteriaType: 0,
-                criterion: 739,
-                from: '01.01.2017',
-                to: '01.02.2017'
-            };
-            $.get('https://timetable-api.azurewebsites.net/timetable', params, this.onTimetableLoaded.bind(this));
-        },
+    ready: function () {
+      window.localforage.getItem('timetable')
+        .then(this.onCachedTimetableLoaded.bind(this));
+    },
 
-        onTimetableLoaded: function (response) {
-            this.items = response;
-        }
+    onCachedTimetableLoaded: function (items) {
+        this.items = items;
+        this.loadTimetable();
+    },
 
-    });
+    loadTimetable: function () {
+      var params = {
+        criteriaType: 0,
+        criterion: 739,
+        from: '01.01.2017',
+        to: '01.02.2017'
+      };
+      $.get('https://timetable-api.azurewebsites.net/timetable', params, this.onTimetableLoaded.bind(this));
+    },
+
+    onTimetableLoaded: function (response) {
+      window.localforage.setItem('timetable', response);
+      this.items = response;
+    }
+
+  });
 </script>
 
 </dom-module>
