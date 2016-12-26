@@ -59,7 +59,7 @@
     <div class="container">
       <paper-card heading="Диапазон">
         <div class="card-content">
-          <paper-radio-group class="column" selected="{{dateRange}}">
+          <paper-radio-group on-iron-select="onDateRangeChanged" class="column" selected="{{dateRange}}">
             <paper-radio-button name="sevenDays">7 дней</paper-radio-button>
             <paper-radio-button name="currentWeek">Текущая неделя</paper-radio-button>
             <paper-radio-button name="nextWeek">Следующая неделя</paper-radio-button>
@@ -118,17 +118,42 @@
 
         isPredefinedDateRangeSelected: {
           type: Boolean,
-          computed: 'calculateIsPredefinedDateRangeSelected(dateRange)'
+          value: false
         }
 
       },
 
-      calculateIsPredefinedDateRangeSelected: function(dateRange) {
-        return dateRange != 'custom';
+      ready: function () {
+        window.localforage.getItem('dateRange').then(this.onCacheLoaded.bind(this));
+      },
+
+      onCacheLoaded: function (value) {
+        if (value) {
+          this.dateRange = value.dateRange;
+          if (value.customDateRange) {
+            this.customDateRange = value.customDateRange;
+          }
+        } else {
+          this.dateRange = 'sevenDays';
+        }
+      },
+
+      onDateRangeChanged: function () {
+        this.isPredefinedDateRangeSelected = this.dateRange != 'custom';
+        this.saveDateRange();
+      },
+
+      saveDateRange: function () {
+        var value = {
+          dateRange: this.dateRange,
+          customDateRange: this.customDateRange
+        };
+        window.localforage.setItem('dateRange', value);
       },
 
       onCustomDateRangeItemTap: function(e) {
         var name = e.currentTarget.getAttribute('name');
+        // var value = this.customDateRange[name];
         dialog.open();
       }
 
