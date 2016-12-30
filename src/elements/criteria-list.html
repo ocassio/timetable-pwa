@@ -5,7 +5,11 @@
 <dom-module id="criteria-list">
 
   <template>
-
+    <template is="dom-repeat" items="[[criteria]]" as="criterion">
+      <paper-card heading="[[criterion.name]]">
+        
+      </paper-card>
+    </template>
   </template>
 
   <script>
@@ -13,10 +17,26 @@
 
       is: 'criteria-list',
 
-      proprties: {
+      properties: {
+        criteriaType: {
+          type: Number,
+          value: 0,
+          observer: 'onCriteriaTypeChanged'
+        },
+        criteria: {
+          type: Array,
+          value: []
+        }
+      },
 
+      onCriteriaTypeChanged: function(criteriaType) {
+        console.log(criteriaType);
+        if (!criteriaType === undefined) return;
+        $.get('https://timetable-api.azurewebsites.net/criteria/' + criteriaType, {}, this.onCriteriaLoaded.bind(this));
+      },
 
-
+      onCriteriaLoaded: function(response) {
+        this.criteria = response;
       }
 
     });

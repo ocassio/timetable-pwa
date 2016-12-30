@@ -7,9 +7,10 @@
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
 <link rel="import" href="../bower_components/paper-menu/paper-menu.html">
-<link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tab.html">
 
 <dom-module id="timetable-app">
   <template>
@@ -28,7 +29,12 @@
         display: block;
       }
       paper-tabs {
-        --paper-tabs-selection-bar-color: var(--accent-color)
+        --paper-tabs-selection-bar-color: var(--accent-color);
+      }
+      @media screen and (max-width: 632px) {
+        paper-tabs {
+          flex: 1;
+        }
       }
       paper-toolbar {
         --paper-toolbar-title: {
@@ -52,9 +58,16 @@
     <paper-header-panel mode="waterfall" main>
 
      <div class="paper-header">
-       <paper-toolbar>
+       <paper-toolbar class$="[[getToolbarClass(page)]]">
          <a href="/" hidden$="[[isMainPage]]"><paper-icon-button icon="icons:arrow-back"></paper-icon-button></a>
-         <span class="title">Расписание</span>
+         <span class="title" hidden$="[[!isMainPage]]">Расписание</span>
+         <span class="title" hidden$="[[!isDatePage(page)]]">Выбор даты</span>
+         <span class="title" hidden$="[[!isCriteriaPage(page)]]">Выбор критерия</span>
+         <paper-tabs class="bottom" selected="{{criteriaType}}" hidden$="[[!isCriteriaPage(page)]]">
+           <paper-tab>Группы</paper-tab>
+           <paper-tab>Преподаватали</paper-tab>
+           <paper-tab>Аудитории</paper-tab>
+         </paper-tabs>
          <a href="/date-range"><paper-icon-button icon="icons:date-range"></paper-icon-button></a>
          <a href="/criteria-list"><paper-icon-button icon="icons:people"></paper-icon-button></a>
        </paper-toolbar>
@@ -66,7 +79,7 @@
          fallback-selection="[[mainPage]]">
         <timetable-list name="timetable-list"></timetable-list>
         <date-range name="date-range"></date-range>
-        <criteria-list name="criteria-list"></criteria-list>
+        <criteria-list name="criteria-list" criteria-type="[[criteriaType]]"></criteria-list>
      </iron-pages>
 
     </paper-header-panel>
@@ -81,9 +94,9 @@
       is: 'timetable-app',
 
       properties: {
-        items: {
-          type: Array,
-          value: ['Расписание', 'Критерии', 'Дата']
+        criteriaType: {
+          type: Number,
+          value: 0
         },
         page: {
           type: String,
@@ -119,6 +132,18 @@
 
       calculateIsMainPage: function(page, mainPage) {
         return mainPage == page;
+      },
+
+      isCriteriaPage: function(page) {
+        return page == 'criteria-list';
+      },
+
+      isDatePage: function(page) {
+        return page == 'date-range';
+      },
+
+      getToolbarClass: function(page) {
+        return this.isCriteriaPage(page) ? 'medium-tall' : '';
       }
 
     });
