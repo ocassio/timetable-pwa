@@ -66,4 +66,7 @@ bower_components
 .bower-registry
 .bower-tmp
 
+### NPM ###
+node_modules/
+
 build/
