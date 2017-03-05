@@ -1,0 +1,6 @@
+{
+  "name": "timetable-pwa",
+  "app_id": "ru.ionov.timetable.pwa",
+  "v2": true,
+  "typescript": true
+}
