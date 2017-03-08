@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { ToastController } from 'ionic-angular';
+import { NavController, ToastController } from 'ionic-angular';
 
 import Day from '../../models/day.model';
 import CriterionStorageModel from '../../models/criterion.storage.model';
@@ -10,6 +10,9 @@ import { DatePage } from '../date/date';
 
 import { ApiService } from '../../services/api.service';
 import { StorageService } from '../../services/storage.service';
+
+const NETWORK_ERROR = 'networkError';
+const CRITERION_MISSING_ERROR = 'criterionMissingError';
 
 @Component({
   selector: 'page-timetable',
@@ -25,6 +28,7 @@ export class TimetablePage {
   constructor(
     private storageService: StorageService,
     private apiService: ApiService,
+    private navController: NavController,
     private toastController: ToastController
   ) { }
 
@@ -48,6 +52,12 @@ export class TimetablePage {
       this.storageService
       .getCriterion()
       .then(criterionData => {
+
+        if (!criterionData) {
+          reject(CRITERION_MISSING_ERROR);
+          return;
+        }
+
         this.apiService
           .getTimetable(
             criterionData.typeId,
@@ -59,15 +69,32 @@ export class TimetablePage {
             this.storageService.setTimetable(timetable);
             resolve(timetable);
           })
-          .catch((reason) => reject(reason));
+          .catch(() => reject(NETWORK_ERROR));
+
       });
     })
-    .catch(this.showErrorMessage.bind(this));
+    .catch(this.processError.bind(this));
   }
 
-  showErrorMessage(): void {
+  processError(error): void {
+    switch (error) {
+      case CRITERION_MISSING_ERROR:
+        this.navController.push(this.criteriaPage);
+        break;
+
+      case NETWORK_ERROR:
+        this.showMessage('Не удалось загрузить данные');
+        break;
+
+      default:
+        this.showMessage('Непредвиденная ошибка');
+        break;
+    }
+  }
+
+  showMessage(message: string): void {
     let toast = this.toastController.create({
-      message: 'Не удалось загрузить данные',
+      message: message,
       duration: 3000
     });
     toast.present();

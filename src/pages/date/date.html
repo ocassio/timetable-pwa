@@ -1,25 +1,9 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>My First List</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>Выбор даты</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-card *ngFor="let item of items" (click)="itemTapped($event, item)">
-      <ion-card-header>
-        <ion-icon name="{{item.icon}}" item-left></ion-icon>
-        {{item.title}}
-      </ion-card-header>
-      <ion-card-content>
-        {{item.note}}
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
-  <div *ngIf="selectedItem" padding>
-    You navigated here from <b>{{selectedItem.title}}</b>
-  </div>
+
 </ion-content>
