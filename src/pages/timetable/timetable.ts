@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 
-import {  } from '@ionic';
+import { ToastController } from 'ionic-angular';
 
 import Day from '../../models/day.model';
+import CriterionStorageModel from '../../models/criterion.storage.model';
 
 import { CriteriaPage } from '../criteria/criteria';
 import { DatePage } from '../date/date';
@@ -23,7 +24,8 @@ export class TimetablePage {
 
   constructor(
     private storageService: StorageService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private toastController: ToastController
   ) { }
 
   ionViewDidLoad(): void {
@@ -40,15 +42,35 @@ export class TimetablePage {
     this.loadTimetable().then(() => refresher.complete());
   }
 
-  loadTimetable(): Promise<void> {
-    return this.apiService
-      .getTimetable(0, '739', { from: '01.03.2017', to: '01.04.2017' })
-      .then(this.processTimetable.bind(this));
+  //TODO: refactor this callback hell
+  loadTimetable(): Promise<Day[]> {
+    return new Promise((resolve, reject) => {
+      this.storageService
+      .getCriterion()
+      .then(criterionData => {
+        this.apiService
+          .getTimetable(
+            criterionData.typeId,
+            criterionData.id,
+            { from: '01.03.2017', to: '01.04.2017' }
+          )
+          .then(timetable => {
+            this.timetable = timetable;
+            this.storageService.setTimetable(timetable);
+            resolve(timetable);
+          })
+          .catch((reason) => reject(reason));
+      });
+    })
+    .catch(this.showErrorMessage.bind(this));
   }
 
-  processTimetable(timetable: Day[]): void {
-    this.timetable = timetable;
-    this.storageService.setTimetable(timetable);
+  showErrorMessage(): void {
+    let toast = this.toastController.create({
+      message: 'Не удалось загрузить данные',
+      duration: 3000
+    });
+    toast.present();
   }
 
 }

@@ -29,7 +29,7 @@ export class StorageService {
     this.storage.set(CRITERION_KEY, criterion);
   }
 
-  getCriterionType(): Promise<CriterionStorageModel> {
+  getCriterion(): Promise<CriterionStorageModel> {
     return this.storage.get(CRITERION_KEY).then(criterion => criterion as CriterionStorageModel);
   }
 
