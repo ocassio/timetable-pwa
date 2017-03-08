@@ -35,8 +35,15 @@ export class CriteriaPage {
     this.loadCriteria();
   }
 
-  ionViewDidEnter(): void {
-    this.loadCriteria();
+  ionViewWillEnter(): void {
+    this.storageService
+      .getCriterion()
+      .then(criterionData => {
+        if (criterionData) {
+          this.criteriaType = criterionData.typeId;
+        }
+        this.loadCriteria();
+      });
   }
 
   loadCriteria(): void {
