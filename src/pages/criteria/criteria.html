@@ -12,8 +12,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <button ion-item *ngFor="let criterion of criteria" (click)="select(criterion.id)">
+  <ion-list [virtualScroll]="criteria">
+    <button ion-item *virtualItem="let criterion" (click)="select(criterion.id)">
       {{criterion.name}}
     </button>
   </ion-list>

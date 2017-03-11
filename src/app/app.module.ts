@@ -5,6 +5,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { MyApp } from './app.component';
+import config from './app.config';
 
 import { TimetablePage } from '../pages/timetable/timetable';
 import { CriteriaPage } from '../pages/criteria/criteria';
@@ -21,7 +22,7 @@ import { StorageService } from '../services/storage.service';
     DatePage
   ],
   imports: [
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, config),
     HttpModule
   ],
   bootstrap: [IonicApp],

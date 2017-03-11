@@ -4,11 +4,20 @@ import { Storage } from '@ionic/storage';
 
 import Day from '../models/day.model';
 import DateRange from '../models/date-range.model';
-import CriterionStorageModel from '../models/criterion.storage.model';
 
 const TIMETABLE_KEY = 'timetable';
 const CRITERION_KEY = 'criterion';
 const DATE_RANGE_KEY = 'dateRange';
+
+export type CriterionStorageModel = {
+  typeId: number;
+  id: string;
+};
+
+export type DateRangeStorageModel = {
+  type: string;
+  dateRange: DateRange
+};
 
 @Injectable()
 export class StorageService {
@@ -33,12 +42,12 @@ export class StorageService {
     return this.storage.get(CRITERION_KEY).then(criterion => criterion as CriterionStorageModel);
   }
 
-  setDateRange(dateRange: DateRange): void {
+  setDateRange(dateRange: DateRangeStorageModel): void {
     this.storage.set(DATE_RANGE_KEY, dateRange);
   }
 
-  getDateRange(): Promise<DateRange> {
-    return this.storage.get(DATE_RANGE_KEY).then(dateRange => dateRange as DateRange);
+  getDateRange(): Promise<DateRangeStorageModel> {
+    return this.storage.get(DATE_RANGE_KEY).then(dateRange => dateRange as DateRangeStorageModel);
   }
 
 }

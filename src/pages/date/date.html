@@ -5,5 +5,55 @@
 </ion-header>
 
 <ion-content>
+  <ion-list>
 
+    <ion-item-group radio-group [(ngModel)]="dateRangeType" (ionChange)="save()">
+      <ion-item-divider color="light">Диапазон</ion-item-divider>
+      <ion-item>
+        <ion-label>7 дней</ion-label>
+        <ion-radio value="sevenDays"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Текущая неделя</ion-label>
+        <ion-radio value="currentWeek"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Следующая неделя</ion-label>
+        <ion-radio value="nextWeek"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Текущий месяц</ion-label>
+        <ion-radio value="currentMonth"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Свой вариант</ion-label>
+        <ion-radio value="custom"></ion-radio>
+      </ion-item>
+    </ion-item-group>
+
+    <ion-item-group *ngIf="dateRangeType == 'custom'">
+      <ion-item-divider color="light">Выберите дату</ion-item-divider>
+      <ion-item>
+        <ion-label>От</ion-label>
+        <ion-datetime
+          [(ngModel)]="customFromDate"
+          (ionChange)="save()"
+          displayFormat="DD MMM YYYY"
+          doneText="Готово"
+          cancelText="Отмена">
+        </ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>До</ion-label>
+        <ion-datetime
+          [(ngModel)]="customToDate"
+          (ionChange)="save()"
+          displayFormat="DD MMM YYYY"
+          doneText="Готово"
+          cancelText="Отмена">
+        </ion-datetime>
+      </ion-item>
+    </ion-item-group>
+
+  </ion-list>
 </ion-content>

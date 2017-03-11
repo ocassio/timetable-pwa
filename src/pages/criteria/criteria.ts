@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
-import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { NavController, NavParams, ToastController, Content } from 'ionic-angular';
 
 import { ApiService } from '../../services/api.service';
 import { StorageService } from '../../services/storage.service';
@@ -18,6 +18,9 @@ export class CriteriaPage {
   private cache: {[key: number]: Criterion[]} = {};
 
   criteria: Criterion[] = [];
+
+  @ViewChild(Content)
+  content: Content;
 
   constructor(
     private apiService: ApiService,
@@ -50,6 +53,7 @@ export class CriteriaPage {
     let cachedCriteria = this.cache[this.criteriaType];
     if (cachedCriteria) {
       this.criteria = cachedCriteria;
+      this.content.scrollToTop();
       return;
     }
     this.loadCriteriaFromServer();
@@ -64,6 +68,7 @@ export class CriteriaPage {
 
   onCriteriaLoaded(criteria): void {
     this.criteria = criteria;
+    this.content.scrollToTop();
     this.cache[this.criteriaType] = criteria;
   }
 

@@ -3,13 +3,14 @@ import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 
 import Day from '../../models/day.model';
-import CriterionStorageModel from '../../models/criterion.storage.model';
 
 import { CriteriaPage } from '../criteria/criteria';
 import { DatePage } from '../date/date';
 
 import { ApiService } from '../../services/api.service';
 import { StorageService } from '../../services/storage.service';
+
+import { DateUtils } from '../../utils/date.utils';
 
 const NETWORK_ERROR = 'networkError';
 const CRITERION_MISSING_ERROR = 'criterionMissingError';
@@ -58,19 +59,20 @@ export class TimetablePage {
           return;
         }
 
-        this.apiService
-          .getTimetable(
-            criterionData.typeId,
-            criterionData.id,
-            { from: '01.03.2017', to: '01.04.2017' }
-          )
-          .then(timetable => {
-            this.timetable = timetable;
-            this.storageService.setTimetable(timetable);
-            resolve(timetable);
-          })
-          .catch(() => reject(NETWORK_ERROR));
+        this.storageService
+          .getDateRange()
+          .then(storedDateRange => {
+            let dateRange = storedDateRange ? storedDateRange.dateRange : DateUtils.getSevenDays();
 
+            this.apiService
+              .getTimetable(criterionData.typeId, criterionData.id, dateRange)
+              .then(timetable => {
+                this.timetable = timetable;
+                this.storageService.setTimetable(timetable);
+                resolve(timetable);
+              })
+              .catch(() => reject(NETWORK_ERROR));
+          });
       });
     })
     .catch(this.processError.bind(this));
