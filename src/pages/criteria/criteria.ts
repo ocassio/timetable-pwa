@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { NavController, NavParams, ToastController, Content } from 'ionic-angular';
+import { NavController, NavParams, ToastController, Toast, Content } from 'ionic-angular';
 
 import { ApiService } from '../../services/api.service';
 import { StorageService } from '../../services/storage.service';
@@ -60,20 +60,27 @@ export class CriteriaPage {
   }
 
   loadCriteriaFromServer(): void {
+    let toast = this.toastController.create({
+      message: 'Обновляем данные...'
+    });
+    toast.present();
+
     this.apiService
       .getCriteria(this.criteriaType)
-      .then(this.onCriteriaLoaded.bind(this))
-      .catch(this.showErrorMessage.bind(this));
+      .then(this.onCriteriaLoaded.bind(this, toast))
+      .catch(this.showErrorMessage.bind(this, toast));
   }
 
-  onCriteriaLoaded(criteria): void {
+  onCriteriaLoaded(toast: Toast, criteria: Criterion[]): void {
     this.criteria = criteria;
+    toast.dismiss();
     this.content.scrollToTop();
     this.cache[this.criteriaType] = criteria;
   }
 
-  showErrorMessage(): void {
-    let toast = this.toastController.create({
+  showErrorMessage(toast: Toast): void {
+    toast.dismiss();
+    let erorrToast = this.toastController.create({
       message: 'Не удалось загрузить данные',
       duration: 3000
     });

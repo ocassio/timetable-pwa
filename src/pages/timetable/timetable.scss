@@ -1,7 +1,56 @@
 page-timetable {
 
-  ion-card-header {
-    // background-color: color($colors, primary);
+  .list {
+    margin: auto;
+    max-width: 550px;
+  }
+
+  .day {
+
+    ion-card-header {
+
+      background-color: color($colors, primary);
+      color: color($colors, light);
+
+      &.today {
+        background-color: color($colors, accent-light);
+      }
+
+      .dayOfWeek {
+        font-size: 1.8rem;
+      }
+    }
+
+    ion-card-content {
+
+      padding: 8px 8px 8px 0px !important;
+
+      .number {
+        font-size: 2.4rem;
+        text-align: center;
+      }
+
+      .time {
+        font-size: 1.2rem;
+        text-align: center;
+        padding: 0;
+      }
+
+      .name {
+        font-size: 1.8rem;
+        padding-bottom: 6px;
+      }
+
+      ion-col {
+        padding: 3px;
+
+        &[col-1] {
+          text-align: center;
+        }
+      }
+
+    }
+
   }
 
 }

@@ -1,9 +1,9 @@
-import TimeRange from './time-range.model';
+import DateRange from './date-range.model';
 
 export default class Lesson {
   number: number;
   dayOfWeek: string;
-  time: TimeRange;
+  time: DateRange;
   name: string;
   teacher: string;
   group: string;

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
-import { NavController, ToastController } from 'ionic-angular';
+import { NavController, ToastController, Content } from 'ionic-angular';
 
 import Day from '../../models/day.model';
 
@@ -26,6 +26,9 @@ export class TimetablePage {
 
   timetable: Day[] = [];
 
+  @ViewChild(Content)
+  content: Content;
+
   constructor(
     private storageService: StorageService,
     private apiService: ApiService,
@@ -40,11 +43,18 @@ export class TimetablePage {
   }
 
   ionViewDidEnter(): void {
-    this.loadTimetable();
+    this.refresh();
   }
 
-  refresh(refresher) {
-    this.loadTimetable().then(() => refresher.complete());
+  refresh() {
+    let toast = this.toastController.create({
+      message: 'Обновляем данные...'
+    });
+    toast.present();
+    this.loadTimetable().then(() => {
+      toast.dismiss();
+      this.content.scrollToTop();
+    });
   }
 
   //TODO: refactor this callback hell
@@ -100,6 +110,14 @@ export class TimetablePage {
       duration: 3000
     });
     toast.present();
+  }
+
+  isToday(date: string) {
+    return DateUtils.isToday(date);
+  }
+
+  withPlaceholder(string: string): string {
+    return string ? string : '-';
   }
 
 }
