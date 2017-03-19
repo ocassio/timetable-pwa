@@ -2,11 +2,21 @@
   <ion-navbar color="primary">
     <ion-title>Выбор критерия</ion-title>
     <ion-buttons end>
+      <button ion-button icon-only (click)="toggleSearch()">
+        <ion-icon name="search"></ion-icon>
+      </button>
       <button ion-button icon-only (click)="loadCriteriaFromServer()">
         <ion-icon name="refresh"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
+  <ion-toolbar color="primary" *ngIf="showSearchBar">
+    <ion-searchbar
+      [(ngModel)]="searchQuery"
+      (ionInput)="onSearchQueryChanged()"
+      placeholder="Поиск">
+    </ion-searchbar>
+  </ion-toolbar>
   <ion-toolbar color="primary">
     <ion-segment [(ngModel)]="criteriaTypeModel" color="light">
       <ion-segment-button value="0">Группы</ion-segment-button>
@@ -14,10 +24,11 @@
       <ion-segment-button value="2">Аудитории</ion-segment-button>
     </ion-segment>
   </ion-toolbar>
+
 </ion-header>
 
 <ion-content>
-  <ion-list [virtualScroll]="criteria">
+  <ion-list [virtualScroll]="criteria | criteriaPipe: searchQuery" approxItemHeight="45px">
     <button ion-item *virtualItem="let criterion" (click)="select(criterion.id)">
       {{criterion.name}}
     </button>

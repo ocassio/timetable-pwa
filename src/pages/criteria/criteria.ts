@@ -19,6 +19,9 @@ export class CriteriaPage {
 
   criteria: Criterion[] = [];
 
+  showSearchBar: boolean = false;
+  searchQuery: string = '';
+
   @ViewChild(Content)
   content: Content;
 
@@ -93,6 +96,18 @@ export class CriteriaPage {
       id: criterionId
     });
     this.navController.pop();
+  }
+
+  onSearchQueryChanged(): void {
+    this.content.scrollToTop();
+  }
+
+  toggleSearch(): void {
+    this.showSearchBar = !this.showSearchBar;
+    this.content.resize();
+    if (!this.showSearchBar) {
+      this.searchQuery = '';
+    }
   }
 
 }

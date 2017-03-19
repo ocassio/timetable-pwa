@@ -11,6 +11,8 @@ import { TimetablePage } from '../pages/timetable/timetable';
 import { CriteriaPage } from '../pages/criteria/criteria';
 import { DatePage } from '../pages/date/date';
 
+import { CriteriaPipe } from '../pipes/criteria.pipe';
+
 import { ApiService } from '../services/api.service';
 import { StorageService } from '../services/storage.service';
 
@@ -19,7 +21,8 @@ import { StorageService } from '../services/storage.service';
     MyApp,
     TimetablePage,
     CriteriaPage,
-    DatePage
+    DatePage,
+    CriteriaPipe
   ],
   imports: [
     IonicModule.forRoot(MyApp, config),
