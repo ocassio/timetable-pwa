@@ -48,8 +48,11 @@ export class CriteriaPage {
         if (criterionData) {
           this.criteriaType = criterionData.typeId;
         }
-        this.loadCriteria();
       });
+  }
+
+  ionViewDidEnter(): void {
+    this.loadCriteria();
   }
 
   loadCriteria(): void {
@@ -87,7 +90,7 @@ export class CriteriaPage {
       message: 'Не удалось загрузить данные',
       duration: 3000
     });
-    toast.present();
+    erorrToast.present();
   }
 
   select(criterionId: string): void {

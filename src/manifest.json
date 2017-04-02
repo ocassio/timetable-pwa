@@ -1,13 +1,23 @@
 {
   "name": "Расписание ПВГУС",
   "short_name": "Расписание",
+  "description": "Расписание занятий Поволжского государственного университета сервиса",
+  "lang": "ru-RU",
   "start_url": "index.html",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "icons": [{
     "src": "assets/imgs/logo.png",
     "sizes": "512x512",
     "type": "image/png"
   }],
-  "background_color": "#4e8ef7",
-  "theme_color": "#4e8ef7"
+  "background_color": "#3F51B5",
+  "theme_color": "#3F51B5",
+  "related_applications": [{
+    "platform": "web"
+  }, {
+    "platform": "play",
+    "url": "https://play.google.com/store/apps/details?id=ru.ionov.timetable",
+    "id": "ru.ionov.timetable"
+  }]
 }
