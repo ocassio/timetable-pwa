@@ -1,13 +1,13 @@
 CACHE MANIFEST
 
-# v5 - 02.04.2017
+# v6 - 03.04.2017
 
 CACHE:
-assets/fonts/ionicons.eot?v=3.0.0
-assets/fonts/ionicons.svg?v=3.0.0
-assets/fonts/ionicons.ttf?v=3.0.0
-assets/fonts/ionicons.woff?v=3.0.0
-assets/fonts/ionicons.woff2?v=3.0.0
+assets/fonts/ionicons.eot?v=3.0.0-alpha.3
+assets/fonts/ionicons.svg?v=3.0.0-alpha.3
+assets/fonts/ionicons.ttf?v=3.0.0-alpha.3
+assets/fonts/ionicons.woff?v=3.0.0-alpha.3
+assets/fonts/ionicons.woff2?v=3.0.0-alpha.3
 assets/fonts/noto-sans-bold.ttf
 assets/fonts/noto-sans-bold.woff
 assets/fonts/noto-sans-regular.ttf
