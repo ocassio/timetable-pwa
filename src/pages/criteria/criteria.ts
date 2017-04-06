@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { NavController, NavParams, ToastController, Toast, Content } from 'ionic-angular';
+import { NavController, NavParams, ToastController, Toast, Content, Searchbar } from 'ionic-angular';
 
 import { ApiService } from '../../services/api.service';
 import { StorageService } from '../../services/storage.service';
@@ -24,6 +24,9 @@ export class CriteriaPage {
 
   @ViewChild(Content)
   content: Content;
+
+  @ViewChild(Searchbar)
+  searchBar: Searchbar;
 
   constructor(
     private apiService: ApiService,
@@ -108,7 +111,9 @@ export class CriteriaPage {
   toggleSearch(): void {
     this.showSearchBar = !this.showSearchBar;
     this.content.resize();
-    if (!this.showSearchBar) {
+    if (this.showSearchBar) {
+      setTimeout(() => this.searchBar.setFocus());
+    } else {
       this.searchQuery = '';
     }
   }

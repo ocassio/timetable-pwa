@@ -10,7 +10,7 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-toolbar color="primary" *ngIf="showSearchBar">
+  <ion-toolbar color="primary" [hidden]="!showSearchBar">
     <ion-searchbar
       [(ngModel)]="searchQuery"
       (ionInput)="onSearchQueryChanged()"
