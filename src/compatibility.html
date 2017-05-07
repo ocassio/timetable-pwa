@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" manifest="manifest.appcache">
 <head>
   <meta charset="UTF-8">
   <title>Расписание ПВГУС</title>
@@ -18,16 +18,6 @@
 
   <!-- cordova.js required for cordova apps -->
   <!--<script src="cordova.js"></script>-->
-
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('service worker installed'))
-        .catch(err => console.log('Error', err));
-    } else {
-      window.location.replace('/compatibility.html');
-    }
-  </script>
 
   <link href="build/main.css" rel="stylesheet">
 
