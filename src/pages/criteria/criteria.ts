@@ -44,14 +44,11 @@ export class CriteriaPage {
     this.loadCriteria();
   }
 
-  ionViewWillEnter(): void {
-    this.storageService
-      .getCriterion()
-      .then(criterionData => {
-        if (criterionData) {
-          this.criteriaType = criterionData.typeId;
-        }
-      });
+  async ionViewWillEnter(): Promise<void> {
+    const criterionData = await this.storageService.getCriterion();
+    if (criterionData) {
+      this.criteriaType = criterionData.typeId;
+    }
   }
 
   ionViewDidEnter(): void {
@@ -68,32 +65,35 @@ export class CriteriaPage {
     this.loadCriteriaFromServer();
   }
 
-  loadCriteriaFromServer(): void {
+  async loadCriteriaFromServer(): Promise<void> {
     let toast = this.toastController.create({
       message: 'Обновляем данные...'
     });
     toast.present();
 
-    this.apiService
-      .getCriteria(this.criteriaType)
-      .then(this.onCriteriaLoaded.bind(this, toast))
-      .catch(this.showErrorMessage.bind(this, toast));
+    try {
+      const criteria = await this.apiService.getCriteria(this.criteriaType);
+      this.setCriteria(criteria);
+    } catch (e) {
+      this.showErrorMessage();
+      this.setCriteria([]);
+    }
+
+    toast.dismiss();
   }
 
-  onCriteriaLoaded(toast: Toast, criteria: Criterion[]): void {
+  setCriteria(criteria: Criterion[]): void {
     this.criteria = criteria;
-    toast.dismiss();
-    this.content.scrollToTop();
     this.cache[this.criteriaType] = criteria;
+    this.content.scrollToTop();
   }
 
-  showErrorMessage(toast: Toast): void {
-    toast.dismiss();
-    let erorrToast = this.toastController.create({
+  showErrorMessage(): void {
+    let toast = this.toastController.create({
       message: 'Не удалось загрузить данные',
       duration: 3000
     });
-    erorrToast.present();
+    toast.present();
   }
 
   select(criterionId: string): void {

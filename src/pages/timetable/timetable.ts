@@ -36,60 +36,56 @@ export class TimetablePage {
     private toastController: ToastController
   ) { }
 
-  ionViewDidLoad(): void {
-    this.storageService
-      .getTimetable()
-      .then(timetable => this.timetable = timetable ? timetable : []);
+  async ionViewDidLoad(): Promise<void> {
+    const timetable = await this.storageService.getTimetable();
+    this.timetable = timetable ? timetable : [];
   }
 
   ionViewDidEnter(): void {
     this.refresh();
   }
 
-  refresh() {
+  async refresh() {
     let toast = this.toastController.create({
       message: 'Обновляем данные...'
     });
     toast.present();
-    this.loadTimetable().then(() => {
-      toast.dismiss();
-      this.content.scrollToTop();
-    });
+
+    try {
+      await this.loadTimetable();
+    } catch (e) {
+      this.processError(e);
+    }
+
+    toast.dismiss();
+    this.content.scrollToTop();
   }
 
-  //TODO: refactor this callback hell
-  loadTimetable(): Promise<Day[]> {
-    return new Promise((resolve, reject) => {
-      this.storageService
-      .getCriterion()
-      .then(criterionData => {
+  async loadTimetable(): Promise<Day[]> {
 
-        if (!criterionData) {
-          reject(CRITERION_MISSING_ERROR);
-          return;
-        }
+    const criterionData = await this.storageService.getCriterion();
+    if (!criterionData) {
+      throw new Error(CRITERION_MISSING_ERROR);
+    }
 
-        this.storageService
-          .getDateRange()
-          .then(storedDateRange => {
-            let dateRange = storedDateRange ? storedDateRange.dateRange : DateUtils.getSevenDays();
+    const storedDateRange = await this.storageService.getDateRange();
+    const dateRange = storedDateRange ? storedDateRange.dateRange : DateUtils.getSevenDays();
 
-            this.apiService
-              .getTimetable(criterionData.typeId, criterionData.id, dateRange)
-              .then(timetable => {
-                this.timetable = timetable;
-                this.storageService.setTimetable(timetable);
-                resolve(timetable);
-              })
-              .catch(() => reject(NETWORK_ERROR));
-          });
-      });
-    })
-    .catch(this.processError.bind(this));
+    let timetable;
+    try {
+      timetable = await this.apiService.getTimetable(criterionData.typeId, criterionData.id, dateRange);
+    } catch (e) {
+      throw new Error(NETWORK_ERROR);
+    }
+
+    this.timetable = timetable;
+    this.storageService.setTimetable(timetable);
+
+    return timetable;
   }
 
-  processError(error): void {
-    switch (error) {
+  processError(error: Error): void {
+    switch (error.message) {
       case CRITERION_MISSING_ERROR:
         this.navController.push(this.criteriaPage);
         break;
