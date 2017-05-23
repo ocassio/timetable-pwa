@@ -2,7 +2,7 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler, DeepLinkConfig } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
@@ -25,6 +25,29 @@ const config = {
   monthShortNames: ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек']
 };
 
+const deepLinkConfig: DeepLinkConfig = {
+  links: [
+    {
+      name: 'timetable',
+      segment: '',
+      component: TimetablePage,
+      defaultHistory: []
+    },
+    {
+      name: 'criteria',
+      segment: 'criteria',
+      component: CriteriaPage,
+      defaultHistory: ['timetable']
+    },
+    {
+      name: 'date',
+      segment: 'date',
+      component: DatePage,
+      defaultHistory: ['timetable']
+    }
+  ]
+};
+
 @NgModule({
   declarations: [
     MyApp,
@@ -35,7 +58,7 @@ const config = {
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp, config),
+    IonicModule.forRoot(MyApp, config, deepLinkConfig),
     IonicStorageModule.forRoot(MyApp),
     HttpModule
   ],

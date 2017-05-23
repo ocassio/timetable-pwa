@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { NavController, ToastController, Toast, Content, Searchbar } from 'ionic-angular';
+import { NavController, ToastController, Content, Searchbar } from 'ionic-angular';
 
 import { ApiService } from '../../services/api.service';
 import { StorageService } from '../../services/storage.service';
@@ -57,7 +57,7 @@ export class CriteriaPage {
 
   loadCriteria(): void {
     let cachedCriteria = this.cache[this.criteriaType];
-    if (cachedCriteria) {
+    if (cachedCriteria && cachedCriteria.length > 0) {
       this.criteria = cachedCriteria;
       this.content.scrollToTop();
       return;
