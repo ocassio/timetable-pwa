@@ -11,7 +11,8 @@
     "ionic:serve": "ionic-app-scripts serve"
   },
   "config": {
-    "ionic_copy": "./config/copy.config.js"
+    "ionic_copy": "./config/copy.config.js",
+    "ionic_webpack": "./config/webpack.config.js"
   },
   "dependencies": {
     "@angular/common": "4.1.0",
