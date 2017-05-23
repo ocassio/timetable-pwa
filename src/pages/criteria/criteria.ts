@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { NavController, NavParams, ToastController, Toast, Content, Searchbar } from 'ionic-angular';
+import { NavController, ToastController, Toast, Content, Searchbar } from 'ionic-angular';
 
 import { ApiService } from '../../services/api.service';
 import { StorageService } from '../../services/storage.service';

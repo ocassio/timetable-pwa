@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 
-import { NavController, NavParams } from 'ionic-angular';
-
 import DateRange from '../../models/date-range.model';
 
 import { StorageService } from '../../services/storage.service';

@@ -1,8 +1,9 @@
 import { NgModule, ErrorHandler } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
 
@@ -33,7 +34,9 @@ const config = {
     CriteriaPipe
   ],
   imports: [
+    BrowserModule,
     IonicModule.forRoot(MyApp, config),
+    IonicStorageModule.forRoot(MyApp),
     HttpModule
   ],
   bootstrap: [IonicApp],
@@ -45,7 +48,6 @@ const config = {
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    Storage,
     ApiService,
     StorageService
   ]
