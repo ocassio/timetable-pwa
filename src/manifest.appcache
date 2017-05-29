@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# v9
+# v10
 
 CACHE:
 assets/fonts/ionicons.eot?v=3.0.0-alpha.3
@@ -24,8 +24,6 @@ assets/fonts/roboto-medium.woff2
 assets/fonts/roboto-regular.ttf
 assets/fonts/roboto-regular.woff
 assets/fonts/roboto-regular.woff2
-assets/icon/favicon.ico
-assets/imgs/logo.png
 build/main.css
 build/polyfills.js
 build/main.js
