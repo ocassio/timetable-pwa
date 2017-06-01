@@ -25,7 +25,7 @@ const config = {
   monthShortNames: ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек']
 };
 
-const deepLinkConfig: DeepLinkConfig = {
+const deepLinkConfiguration: DeepLinkConfig = {
   links: [
     {
       name: 'timetable',
@@ -47,6 +47,9 @@ const deepLinkConfig: DeepLinkConfig = {
     }
   ]
 };
+
+// Hack for proper URL handling in iOS Web App
+const deepLinkConfig = !('standalone' in window.navigator) ? deepLinkConfiguration : null;
 
 @NgModule({
   declarations: [
