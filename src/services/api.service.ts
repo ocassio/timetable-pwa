@@ -7,7 +7,7 @@ import Criterion from '../models/criterion.model';
 import Day from '../models/day.model';
 import DateRange from '../models/date-range.model';
 
-const API_SERVER = 'https://timetable-api.azurewebsites.net';
+const API_SERVER = 'https://ocassio.asuscomm.com/timetable-api';
 const CRITERIA_URL = `${API_SERVER}/criteria`;
 const TIMETABLE_URL = `${API_SERVER}/timetable`;
 
